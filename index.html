@@ -66,6 +66,56 @@
   <script>
     "use strict";
     // Код писать здесь
-    console.log("It works!");
+    const commentsList = document.querySelector('.comments');
+    const nameInput = document.querySelector('.add-form-name');
+    const textInput = document.querySelector('.add-form-text');
+    const addButton = document.querySelector('.add-form-button');
+
+    function formatDate(date) {
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yy = String(date.getFullYear()).slice(-2);
+      const hh = String(date.getHours()).padStart(2, '0');
+      const min = String(date.getMinutes()).padStart(2, '0');
+      return `${dd}.${mm}.${yy} ${hh}:${min}`;
+    }
+
+    addButton.addEventListener('click', function () {
+      const name = nameInput.value.trim();
+      const text = textInput.value.trim();
+
+      if (!name || !text) {
+        alert('Пожалуйста, заполните имя и комментарий!');
+        return;
+      }
+
+      const now = new Date();
+      const dateString = formatDate(now);
+
+      const newCommentHTML = `
+        <li class="comment">
+        <div class="comment-header">
+          <div>${name}</div>
+          <div>${dateString}</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            ${text}
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">0</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>`;
+
+      commentsList.innerHTML += newCommentHTML;
+
+
+      nameInput.value = '';
+      textInput.value = '';
+    });
   </script>
 </html>
