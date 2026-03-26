@@ -9,40 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+      
       </ul>
       <div class="add-form">
         <input
@@ -101,23 +68,50 @@
       return `${dd}.${mm}.${yy} ${hh}:${min}`;
     }
 
+
+    function escapeHTML(str) {
+      return str.replaceAll('&', '&')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '"')
+                .replaceAll("'", "'")
+                }
+
     function renderComments() {
       commentsList.innerHTML = '';
 
       commentsData.forEach(comment => {
-       const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';
+        const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';
+
+        let quotedBlock = '';
+        let displayText = escapeHTML(comment.text);
+
+        if (comment.text.startsWith('> Ответ на комментарий:')) {
+          const parts = comment.text.split('\n');
+          const quoteLine = parts[0]; 
+          textInput.focus();
+      
+          const replyLines = parts.slice(1).map(line => escapeHTML(line)).join('\n');
+
+          quotedBlock = `
+            <div class="quoted-comment">
+              <p>${quoteLine.replace('> ', '')}</p> 
+            </div>
+          `;
+
+          displayText = replyLines ? `<div class="comment-text">${replyLines}</div>` : '';
+        } else {
+          displayText = `<div class="comment-text">${displayText}</div>`;
+        }
 
         const commentHTML = `
           <li class="comment" data-id="${comment.id}">
             <div class="comment-header">
-              <div>${comment.name}</div>
+              <div>${escapeHTML(comment.name)}</div>
               <div>${comment.date}</div>
             </div>
-            <div class="comment-body">
-              <div class="comment-text">
-                ${comment.text}
-              </div>
-            </div>
+            ${quotedBlock} 
+            ${displayText} 
             <div class="comment-footer">
               <div class="likes">
                 <span class="likes-counter">${comment.likes}</span>
@@ -153,6 +147,31 @@
         }
       }
     });
+
+    ////ответ на комментарий
+    commentsList.addEventListener('click', function(event) {
+    const target = event.target;
+
+    
+      if (target.closest('.like-button')) {
+        event.stopPropagation(); 
+        return;
+      }
+
+    
+      const commentElement = target.closest('.comment');
+      if (commentElement) {
+        const commentId = parseInt(commentElement.dataset.id);
+        const comment = commentsData.find(c => c.id === commentId);
+    
+        if (comment) {
+          const quotedText = `> Ответ на комментарий: ${escapeHTML(comment.name)} : ${escapeHTML(comment.text)}\n`;;
+          textInput.value = quotedText;
+          textInput.focus();
+        }
+      }
+    });
+    renderComments();
 
     addButton.addEventListener('click', function () {
       const name = nameInput.value.trim();
