@@ -1,27 +1,33 @@
-import { escapeHTML } from './escapeHTML.js';
-import { formatDate } from './formateDate.js';
-
+import { escapeHTML } from "./escapeHTML.js";
+import { formatDate } from "./formateDate.js";
 
 export function renderComments(commentsArray, commentsListElement) {
-  commentsListElement.innerHTML = ''; 
+  commentsListElement.innerHTML = "";
 
-  commentsArray.forEach(comment => {
-    const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';
+  commentsArray.forEach((comment) => {
+    const likeButtonClass = comment.isLiked
+      ? "like-button -active-like"
+      : "like-button";
 
-    let quotedBlock = '';
+    let quotedBlock = "";
     let displayText = escapeHTML(comment.text);
 
-    if (comment.text.startsWith('> Ответ на комментарий:')) {
-      const parts = comment.text.split('\n');
+    if (comment.text.startsWith("> Ответ на комментарий:")) {
+      const parts = comment.text.split("\n");
       const quoteLine = parts[0];
-      const replyLines = parts.slice(1).map(line => escapeHTML(line)).join('\n');
+      const replyLines = parts
+        .slice(1)
+        .map((line) => escapeHTML(line))
+        .join("\n");
 
       quotedBlock = `
         <div class="quoted-comment">
-          <p>${quoteLine.replace('> ', '')}</p>
+          <p>${quoteLine.replace("> ", "")}</p>
         </div>
       `;
-      displayText = replyLines ? `<div class="comment-text">${replyLines}</div>` : '';
+      displayText = replyLines
+        ? `<div class="comment-text">${replyLines}</div>`
+        : "";
     } else {
       displayText = `<div class="comment-text">${displayText}</div>`;
     }
@@ -43,6 +49,6 @@ export function renderComments(commentsArray, commentsListElement) {
       </li>
     `;
 
-    commentsListElement.insertAdjacentHTML('beforeend', commentHTML);
+    commentsListElement.insertAdjacentHTML("beforeend", commentHTML);
   });
 }

@@ -3,5 +3,5 @@ export function escapeHTML(str) {
             .replaceAll('<', '&lt;')
             .replaceAll('>', '&gt;')
             .replaceAll('"', '&quot;')
-            .replaceAll("'", "&rsquo");
+            .replaceAll("'", "&rsquo;");
 }
