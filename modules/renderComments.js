@@ -1,10 +1,9 @@
-// modules/renderComments.js
 import { escapeHTML } from './escapeHTML.js';
 import { formatDate } from './formateDate.js';
 
 
 export function renderComments(commentsArray, commentsListElement) {
-  commentsListElement.innerHTML = ''; // Очищаем список
+  commentsListElement.innerHTML = ''; 
 
   commentsArray.forEach(comment => {
     const likeButtonClass = comment.isLiked ? 'like-button -active-like' : 'like-button';

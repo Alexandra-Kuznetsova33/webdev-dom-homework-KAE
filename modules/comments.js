@@ -1,4 +1,3 @@
-// modules/сomments.js
 export let commentsData = [
   {
     id: 1,

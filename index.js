@@ -1,4 +1,3 @@
-// index.js
 import { renderComments } from "/modules/renderComments.js";
 import {
   initLikeListeners,

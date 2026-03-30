@@ -1,4 +1,3 @@
-// modules/addComment.js
 import { escapeHTML } from './escapeHTML.js';
 import { formatDate } from './formateDate.js';
 

@@ -1,4 +1,3 @@
-// modules/initListeners.js
 import { commentsData } from "./comments.js";
 import { escapeHTML } from "./escapeHTML.js";
 import { renderComments } from "./renderComments.js";
@@ -74,7 +73,6 @@ export const initAddCommentListener = () => {
   
       addComment(commentsData, name, text);
       
-      // Очищаем поля ввода
       nameInput.value = '';
       textInput.value = '';
       
