@@ -1,15 +1,21 @@
-import { escapeHTML } from './escapeHTML.js';
-import { formatDate } from './formateDate.js';
+import { postComment, fetchComments } from './api.js';
+import { commentsData, updateComments } from './comments.js';
+import { renderComments } from './renderComments.js';
 
-export function addComment(commentsArray, name, text) {
-  const now = new Date();
-  const newComment = {
-    id: Date.now(),
-    name: name,
-    text: text,
-    date: formatDate(now),
-    likes: 0,
-    isLiked: false,
-  };
-  commentsArray.push(newComment);
-}
+export const addCommentAndRender = async (name, text) => {
+  const commentsList = document.querySelector(".comments");
+  if (!commentsList) return;
+
+  try {
+    await postComment(name, text);
+
+    const freshComments = await fetchComments();
+
+    updateComments(freshComments);
+
+    renderComments(commentsData, commentsList);
+  } catch (error) {
+    console.error("Ошибка добавления:", error);
+    alert(`Не удалось добавить комментарий: ${error.message}`);
+  }
+};
