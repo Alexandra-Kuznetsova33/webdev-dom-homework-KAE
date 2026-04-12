@@ -135,3 +135,12 @@ body {
   .add-form-button:hover {
     opacity: 0.9;
   }
+
+  .quoted-comment {
+    background-color: #23005227; 
+    padding: 12px;
+    border-left: 4px solid #bdec30;
+    margin-bottom: 12px;
+    font-style: italic; 
+    font-size: 0.95em;
+  }
