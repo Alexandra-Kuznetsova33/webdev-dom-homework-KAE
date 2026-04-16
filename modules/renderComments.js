@@ -5,9 +5,9 @@ export function renderComments(commentsArray, commentsListElement) {
   commentsListElement.innerHTML = "";
 
   commentsArray.forEach((comment) => {
-    const likeButtonClass = comment.isLiked
-      ? "like-button -active-like"
-      : "like-button";
+    let likeButtonClass = "like-button";
+    if (comment.isLiked) likeButtonClass += " -active-like";
+    if (comment.isLikeLoading) likeButtonClass += " -loading-like";
 
     let quotedBlock = "";
     let displayText = escapeHTML(comment.text);
