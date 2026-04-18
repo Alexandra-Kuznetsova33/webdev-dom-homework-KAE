@@ -3,27 +3,34 @@ import { escapeHTML } from "./escapeHTML.js";
 import { renderComments } from "./renderComments.js";
 import { addCommentAndRender } from "./addComment.js";
 
+function delay(interval = 300) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, interval);
+  });
+}
+
 export const initLikeListeners = () => {
   const commentsList = document.querySelector(".comments");
 
-  commentsList.addEventListener("click", function (event) {
-    if (event.target.closest(".like-button")) {
-      const likeButton = event.target.closest(".like-button");
-      const commentElement = likeButton.closest(".comment");
-      const commentId = parseInt(commentElement.dataset.id);
-      const comment = commentsData.find((c) => c.id === commentId);
+  commentsList.addEventListener("click", async function (event) {
+    const likeButton = event.target.closest(".like-button");
+    if (!likeButton) return; 
 
-      if (comment) {
-        if (comment.isLiked) {
-          comment.isLiked = false;
-          comment.likes -= 1;
-        } else {
-          comment.isLiked = true;
-          comment.likes += 1;
-        }
-        renderComments(commentsData, commentsList);
-      }
-    }
+    const commentElement = likeButton.closest(".comment");
+    const commentId = parseInt(commentElement.dataset.id);
+    const comment = commentsData.find((c) => c.id === commentId);
+    if (!comment) return;
+
+    comment.isLikeLoading = true;
+    renderComments(commentsData, commentsList);
+
+    await delay(1000);
+
+    comment.isLiked = !comment.isLiked;
+    comment.likes += comment.isLiked ? 1 : -1;
+    comment.isLikeLoading = false;
+
+    renderComments(commentsData, commentsList);
   });
 };
 
