@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Проект "Комменты"</title>
@@ -7,29 +7,37 @@
   </head>
 
   <body>
-
     <div class="container">
-      <div class="loading-message">Загружаем комментарии...</div>
-      <ul class="comments" style="display: none;">
-      
-      </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
-        <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+      <div id="main-content">
+        <div class="loading-message">Загружаем комментарии...</div>
+        <ul class="comments" style="display: none"></ul>
+
+         <div class="auth-link" style="display: none;">
+          Чтобы добавить комментарий,&ensp;<a href="#" class="auth-link-trigger">авторизуйтесь</a>
+        </div>
+
+        <div class="add-form">
+          <input
+            type="text"
+            class="add-form-name"
+            placeholder="Ваше имя"
+            readonly
+          />
+          <textarea
+            type="textarea"
+            class="add-form-text"
+            placeholder="Введите ваш коментарий"
+            rows="4"
+          ></textarea>
+          <div class="add-form-row">
+            <button class="add-form-button">Написать</button>
+          </div>
+        </div>
+        <div class="adding-message" style="display: none">
+          Комментарий добавляется...
         </div>
       </div>
-      <div class="adding-message" style="display: none;">Комментарий добавляется...</div>
+      <div id="auth-page" style="display: none"></div>
     </div>
     <script type="module" src="./index.js"></script>
   </body>
