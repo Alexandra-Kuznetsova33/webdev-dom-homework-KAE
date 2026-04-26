@@ -14,7 +14,7 @@ export const initLikeListeners = () => {
 
   commentsList.addEventListener("click", async function (event) {
     const likeButton = event.target.closest(".like-button");
-    if (!likeButton) return; 
+    if (!likeButton) return;
 
     const commentElement = likeButton.closest(".comment");
     const commentId = parseInt(commentElement.dataset.id);
@@ -83,10 +83,14 @@ export const initAddCommentListener = () => {
         return;
       }
 
-      await addCommentAndRender(name, text);
+      addButton.disabled = true;
+      const success = await addCommentAndRender(name, text);
+      addButton.disabled = false;
 
-      nameInput.value = "";
-      textInput.value = "";
+      if (success) {
+        nameInput.value = "";
+        textInput.value = "";
+      }
     });
   }
 };

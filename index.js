@@ -3,9 +3,9 @@ import {
   initLikeListeners,
   initReplyListeners,
   initAddCommentListener,
-} from "/modules/initListeners.js";
+} from "./modules/initListeners.js";
 import { commentsData } from "./modules/comments.js";
-import { fetchComments } from "./modules/api.js";
+import { fetchComments, getErrorMessage } from "./modules/api.js";
 import { updateComments } from "./modules/comments.js";
 
 async function loadComments() {
@@ -14,6 +14,8 @@ async function loadComments() {
 
   if (!commentsList || !loadingMessage) return;
 
+  loadingMessage.style.display = "flex";
+  commentsList.style.display = "none";
 
   try {
     const serverComments = await fetchComments();
@@ -23,8 +25,10 @@ async function loadComments() {
     loadingMessage.style.display = "none";
     commentsList.style.display = "flex";
   } catch (error) {
-    loadingMessage.textContent = "Не удалось загрузить комментарии :(";
     console.error(error);
+    const message = getErrorMessage(error);
+    loadingMessage.textContent = message;
+    alert(message);
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
