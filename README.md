@@ -1,6 +1,3 @@
 # Проект "Комментарии"
 
-
-## Как разрабатывать
-
-Открой index.html в браузере
+Ссылка: https://alexandra-kuznetsova33.github.io/CommentsPro/
