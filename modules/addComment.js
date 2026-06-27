@@ -2,7 +2,7 @@ import { postComment, fetchComments, getErrorMessage } from "./api.js";
 import { commentsData, updateComments } from "./comments.js";
 import { renderComments } from "./renderComments.js";
 
-export const addCommentAndRender = async (name, text, attempt = 1) => {
+export const addCommentAndRender = async (text, attempt = 1) => {
   const commentsList = document.querySelector(".comments");
   const addForm = document.querySelector(".add-form");
   const addingMessage = document.querySelector(".adding-message");
@@ -17,7 +17,7 @@ export const addCommentAndRender = async (name, text, attempt = 1) => {
   }
 
   try {
-    await postComment(name, text);
+    await postComment(text);
 
     const freshComments = await fetchComments();
 
@@ -32,7 +32,7 @@ export const addCommentAndRender = async (name, text, attempt = 1) => {
 
     if (error.status === 500 && attempt === 1) {
       addingMessage.textContent = "Повторная попытка...";
-      const result = await addCommentAndRender(name, text, attempt + 1);
+      const result = await addCommentAndRender(text, attempt + 1);
       if (result) {
         addForm.style.display = "flex";
         addingMessage.style.display = "none";

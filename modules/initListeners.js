@@ -11,13 +11,14 @@ function delay(interval = 300) {
 
 export const initLikeListeners = () => {
   const commentsList = document.querySelector(".comments");
+  if (!commentsList) return;
 
   commentsList.addEventListener("click", async function (event) {
     const likeButton = event.target.closest(".like-button");
     if (!likeButton) return;
 
     const commentElement = likeButton.closest(".comment");
-    const commentId = parseInt(commentElement.dataset.id);
+    const commentId = commentElement.dataset.id;   
     const comment = commentsData.find((c) => c.id === commentId);
     if (!comment) return;
 
@@ -47,7 +48,7 @@ export const initReplyListeners = () => {
 
     const commentElement = target.closest(".comment");
     if (commentElement) {
-      const commentId = parseInt(commentElement.dataset.id);
+      const commentId = commentElement.dataset.id;
       const comment = commentsData.find((c) => c.id === commentId);
 
       if (comment) {
@@ -58,8 +59,6 @@ export const initReplyListeners = () => {
       }
     }
   });
-
-  renderComments(commentsData, commentsList);
 };
 
 export const initAddCommentListener = () => {
@@ -70,25 +69,18 @@ export const initAddCommentListener = () => {
 
   if (addButton && nameInput && textInput && commentsList) {
     addButton.addEventListener("click", async () => {
-      const name = nameInput.value.trim();
       const text = textInput.value.trim();
 
-      if (!name || !text) {
-        alert("Пожалуйста, заполните имя и комментарий!");
-        return;
-      }
-
-      if (name.length < 3 || text.length < 3) {
-        alert("Имя и текст комментария должны содержать хотя бы 3 символа.");
+      if (text.length < 3) {
+        alert("Текст комментария должен быть не короче 3 символов");
         return;
       }
 
       addButton.disabled = true;
-      const success = await addCommentAndRender(name, text);
+      const success = await addCommentAndRender(text);
       addButton.disabled = false;
 
       if (success) {
-        nameInput.value = "";
         textInput.value = "";
       }
     });
